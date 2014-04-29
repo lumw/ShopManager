@@ -7,7 +7,7 @@
 <struts>
 
     <!-- 将action 交给spring 托管 -->
-    <constant name="struts.objectFactory" value="spring"></constant>
+    <constant name="struts.objectFactory" value="spring"/>
 
     <package name="struts2" namespace="/" extends="struts-default">
         <action name="login" class="com.manager.action.LoginAction">

@@ -1,9 +1,7 @@
 package com.manager.dao.impl;
 
 import com.manager.dao.UserDao;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-
-import java.util.Map;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * <pre>
@@ -20,14 +18,18 @@ import java.util.Map;
  *
  * </pre>
  */
-public class UserDaoImpl extends JdbcDaoSupport implements UserDao{
+public class UserDaoImpl implements UserDao{
 
-    public boolean login(String userName, String password) {
+    private JdbcTemplate jdbcTemplate;
 
-        String sql = "select password from user_info_t where username = ?";
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate)
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
-        Map map = this.getJdbcTemplate().queryForMap(sql, userName);
+    public String login(String userName, String password) {
 
-        return(password.equals(map.get("password")));
+        return  jdbcTemplate.queryForObject("select * from user_info_t where username = "
+                                            + userName, String.class);
     }
 }
