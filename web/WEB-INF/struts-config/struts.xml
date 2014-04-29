@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <!-- 将action 交给spring 托管 -->
+    <constant name="struts.objectFactory" value="spring"></constant>
+
+    <package name="struts2" namespace="/" extends="struts-default">
+        <action name="login" class="com.manager.action.LoginAction">
+            <result name="success">/jsp/success.jsp</result>
+            <result name="failure">/jsp/failure.jsp</result>
+        </action>
+    </package>
+</struts>
