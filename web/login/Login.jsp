@@ -1,4 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -77,14 +78,14 @@
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" id="userName" name="userName" placeholder="姓名" />
+															<input type="text" class="form-control" id="username" name="username" placeholder="姓名" />
 															<i class="icon-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="密码" />
+															<input type="password" class="form-control" id="password" name="password" placeholder="密码" />
 															<i class="icon-lock"></i>
 														</span>
 													</label>
