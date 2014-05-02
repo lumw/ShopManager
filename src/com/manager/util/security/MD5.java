@@ -1,382 +1,386 @@
 /************************************************
-MD5 Ëã·¨µÄJava Bean
-@author:Topcat Tuppin
-Last Modified:10,Mar,2001
-*************************************************/
+ MD5 é”Ÿå§æ³•é”Ÿæ–¤æ‹·Java Bean
+ @author:Topcat Tuppin
+ Last Modified:10,Mar,2001
+ *************************************************/
 package com.manager.util.security;
 
 import java.lang.reflect.Array;
 
-/*************************************************
-md5 ÀàÊµÏÖÁËRSA Data Security, Inc.ÔÚÌá½»¸øIETF
-µÄRFC1321ÖĞµÄMD5 message-digest Ëã·¨¡£
-*************************************************/
+/**
+ * **********************************************
+ * md5 é”Ÿæ–¤æ‹·å®é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·RSA Data Security, Inc.é”Ÿæ–¤æ‹·é”Ÿç»“äº¤é”Ÿæ–¤æ‹·IETF
+ * é”Ÿæ–¤æ‹·RFC1321é”Ÿå«ç¢‰æ‹·MD5 message-digest é”Ÿå§æ³•é”Ÿæ–¤æ‹·
+ * ***********************************************
+ */
 
-public class MD5
-{
-	/* ÏÂÃæÕâĞ©S11-S44Êµ¼ÊÉÏÊÇÒ»¸ö4*4µÄ¾ØÕó£¬ÔÚÔ­Ê¼µÄCÊµÏÖÖĞÊÇÓÃ#define ÊµÏÖµÄ£¬
-	ÕâÀï°ÑËüÃÇÊµÏÖ³ÉÎªstatic finalÊÇ±íÊ¾ÁËÖ»¶Á£¬ÇĞÄÜÔÚÍ¬Ò»¸ö½ø³Ì¿Õ¼äÄÚµÄ¶à¸ö
-	Instance¼ä¹²Ïí*/
-        static final int S11 = 7;
-        static final int S12 = 12;
-        static final int S13 = 17;
-        static final int S14 = 22;
+public class MD5 {
+    /* é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·äº›S11-S44å®é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¸€é”Ÿæ–¤æ‹·4*4é”Ÿä¾¥æ’…æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åŸå§‹é”Ÿæ–¤æ‹·Cå®é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·#define å®é”Ÿè¡—çš„ï½æ‹·
+    é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç»ç¢‰æ‹·æ®–é”Ÿè½¿çŒ»tatic finalé”Ÿè§’æ†‹æ‹·ç¤ºé”Ÿæ–¤æ‹·åªé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åŒä¸€é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ç‚­å é”Ÿæ–¤æ‹·è¯˜äº©é”Ÿæ–¤æ‹·
+    Instanceé”Ÿæˆ’å…±é”Ÿæ–¤æ‹·*/
+    static final int S11 = 7;
+    static final int S12 = 12;
+    static final int S13 = 17;
+    static final int S14 = 22;
 
-        static final int S21 = 5;
-        static final int S22 = 9;
-        static final int S23 = 14;
-        static final int S24 = 20;
+    static final int S21 = 5;
+    static final int S22 = 9;
+    static final int S23 = 14;
+    static final int S24 = 20;
 
-        static final int S31 = 4;
-        static final int S32 = 11;
-        static final int S33 = 16;
-        static final int S34 = 23;
+    static final int S31 = 4;
+    static final int S32 = 11;
+    static final int S33 = 16;
+    static final int S34 = 23;
 
-        static final int S41 = 6;
-        static final int S42 = 10;
-        static final int S43 = 15;
-        static final int S44 = 21;
+    static final int S41 = 6;
+    static final int S42 = 10;
+    static final int S43 = 15;
+    static final int S44 = 21;
 
-        static final byte[] PADDING = { -128, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        /* ÏÂÃæµÄÈı¸ö³ÉÔ±ÊÇMD5¼ÆËã¹ı³ÌÖĞÓÃµ½µÄ3¸öºËĞÄÊı¾İ£¬ÔÚÔ­Ê¼µÄCÊµÏÖÖĞ
-           ±»¶¨Òåµ½MD5_CTX½á¹¹ÖĞ
-        
-         */
-        private long[] state = new long[4];  // state (ABCD)
-        private long[] count = new long[2];  // number of bits, modulo 2^64 (lsb first)
-        private byte[] buffer = new byte[64]; // input buffer
-        
-	/* digestHexStrÊÇMD5µÄÎ¨Ò»Ò»¸ö¹«¹²³ÉÔ±£¬ÊÇ×îĞÂÒ»´Î¼ÆËã½á¹ûµÄ
-	¡¡ 16½øÖÆASCII±íÊ¾.
-	*/
-        public String digestHexStr;
-        
-        /* digest,ÊÇ×îĞÂÒ»´Î¼ÆËã½á¹ûµÄ2½øÖÆÄÚ²¿±íÊ¾£¬±íÊ¾128bitµÄMD5Öµ.
-	*/
-        private byte[] digest = new byte[16];
-        
-	/*
-	  getMD5ofStrÊÇÀàMD5×îÖ÷ÒªµÄ¹«¹²·½·¨£¬Èë¿Ú²ÎÊıÊÇÄãÏëÒª½øĞĞMD5±ä»»µÄ×Ö·û´®
-	  ·µ»ØµÄÊÇ±ä»»ÍêµÄ½á¹û£¬Õâ¸ö½á¹ûÊÇ´Ó¹«¹²³ÉÔ±digestHexStrÈ¡µÃµÄ£®
-	*/
-        public String getMD5ofStr(String inbuf) {
-                md5Init();
-                md5Update(inbuf.getBytes(), inbuf.length());
-                md5Final();
-                digestHexStr = "";
-                for (int i = 0; i < 16; i++) {
-                        digestHexStr += byteHEX(digest[i]);
-                }
-                return digestHexStr;
+    static final byte[] PADDING = {-128, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    /* é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å‘˜é”Ÿæ–¤æ‹·MD5é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”ŸçŸ«ç¢‰æ‹·é”Ÿæ–¤æ‹·3é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è©é”Ÿæ–¤æ‹·é”Ÿçš†î…ƒç¡·æ‹·é”Ÿç´ºå®é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
+       é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿè—‰åˆ°MD5_CTXé”Ÿç»“æ„é”Ÿæ–¤æ‹·
 
+     */
+    private long[] state = new long[4];  // state (ABCD)
+    private long[] count = new long[2];  // number of bits, modulo 2^64 (lsb first)
+    private byte[] buffer = new byte[64]; // input buffer
+
+    /* digestHexStré”Ÿæ–¤æ‹·MD5é”Ÿæ–¤æ‹·å”¯ä¸€ä¸€é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å‘˜é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¸€é”Ÿè½¿ç¡·æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿ?
+    é”Ÿæ–¤æ‹· 16é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ASCIIé”Ÿæ–¤æ‹·ç¤º.
+    */
+    public String digestHexStr;
+
+    /* digest,é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¸€é”Ÿè½¿ç¡·æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿ?é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”ŸèŠ‚è¯§æ‹·é”Ÿæ–¤æ‹·ç¤ºé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ç¤º128bité”Ÿæ–¤æ‹·MD5å€¼.
+*/
+    private byte[] digest = new byte[16];
+
+    /*
+      getMD5ofStré”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·MD5é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è¦é”Ÿä¾¥ç™¸æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è¯“é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ­îæ‹·é”Ÿæ–¤æ‹·é”Ÿçµ„D5é”Ÿæˆ’æ¢é”Ÿæ–¤æ‹·é”Ÿè¡—å‡¤æ‹·
+      é”Ÿæ–¤æ‹·é”Ÿæˆªç¢‰æ‹·é”Ÿè§’å˜æ¢é”Ÿæ–¤æ‹·æ…•é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿè§’ä»ç™¸æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å‘˜digestHexStrå–é”ŸçŸ«çš„ï½æ‹·
+    */
+    public String getMD5ofStr(String inbuf) {
+        md5Init();
+        md5Update(inbuf.getBytes(), inbuf.length());
+        md5Final();
+        digestHexStr = "";
+        for (int i = 0; i < 16; i++) {
+            digestHexStr += byteHEX(digest[i]);
         }
-        // ÕâÊÇMD5Õâ¸öÀàµÄ±ê×¼¹¹Ôìº¯Êı£¬JavaBeanÒªÇóÓĞÒ»¸öpublicµÄ²¢ÇÒÃ»ÓĞ²ÎÊıµÄ¹¹Ôìº¯Êı
-        public MD5() {
-                md5Init();
-        }
-        
+        return digestHexStr;
+
+    }
+
+    // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·MD5é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿä¾¥æ†‹æ‹·å‡†é”Ÿæ–¤æ‹·é”Ÿå±Šå‡½é”Ÿæ–¤æ‹·JavaBeanè¦é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¸€é”Ÿæ–¤æ‹·publicé”Ÿä¾¥è¯§æ‹·é”Ÿæ–¤æ‹·æ²¡é”Ÿå«è¯§æ‹·é”Ÿæ–¤æ‹·å¢“é”Ÿæ–¤æ‹·æ—Œîˆ¤æ‹·é”Ÿ?
+    public MD5() {
+        md5Init();
+    }
 
 
-        /* md5InitÊÇÒ»¸ö³õÊ¼»¯º¯Êı£¬³õÊ¼»¯ºËĞÄ±äÁ¿£¬×°Èë±ê×¼µÄ»ÃÊı */
-        private void md5Init() {
-                count[0] = 0L;
-                count[1] = 0L;
-                ///* Load magic initialization constants.
+    /* md5Inité”Ÿæ–¤æ‹·ä¸€é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å§‹é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç»ç¡·æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è°‹é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿé˜¶å¸®æ‹·é”Ÿæ–¤æ‹·å‡†é”Ÿä¾¥ä¼™æ‹·é”Ÿæ–¤æ‹· */
+    private void md5Init() {
+        count[0] = 0L;
+        count[1] = 0L;
+        ///* Load magic initialization constants.
 
-                state[0] = 0x67452301L;
-                state[1] = 0xefcdab89L;
-                state[2] = 0x98badcfeL;
-                state[3] = 0x10325476L;
-        }
-        /* F, G, H ,I ÊÇ4¸ö»ù±¾µÄMD5º¯Êı£¬ÔÚÔ­Ê¼µÄMD5µÄCÊµÏÖÖĞ£¬ÓÉÓÚËüÃÇÊÇ
-        ¼òµ¥µÄÎ»ÔËËã£¬¿ÉÄÜ³öÓÚĞ§ÂÊµÄ¿¼ÂÇ°ÑËüÃÇÊµÏÖ³ÉÁËºê£¬ÔÚjavaÖĞ£¬ÎÒÃÇ°ÑËüÃÇ
-     ¡¡¡¡ÊµÏÖ³ÉÁËprivate·½·¨£¬Ãû×Ö±£³ÖÁËÔ­À´CÖĞµÄ¡£ */
+        state[0] = 0x67452301L;
+        state[1] = 0xefcdab89L;
+        state[2] = 0x98badcfeL;
+        state[3] = 0x10325476L;
+    }
+        /* F, G, H ,I é”Ÿæ–¤æ‹·4é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿçµ„D5é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åŸå§‹é”Ÿæ–¤æ‹·MD5é”Ÿæ–¤æ‹·Cå®é”Ÿæ–¤æ‹·é”Ÿå«ï½æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
+        é”Ÿæ´¥å•ç¢‰æ‹·ä½é”Ÿæ–¤æ‹·é”Ÿå§ï¼Œé”Ÿæ–¤æ‹·é”Ÿæ°ç­¹æ‹·é”Ÿæ–¤æ‹·æ•ˆé”Ÿç»çš„åŒ¡æ‹·é”Ÿè§’å¸®æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å®é”Ÿè¡—ç­¹æ‹·é”Ÿå‰¿å®ï¼Œé”Ÿæ–¤æ‹·javaé”Ÿå«ï½æ‹·é”Ÿæ–¤æ‹·é”Ÿè§’å¸®æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
+     é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å®é”Ÿè¡—ç­¹æ‹·é”Ÿæ–¤æ‹·privateé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿè¡—æ†‹æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åŸé”Ÿæ–¤æ‹·Cé”Ÿå«çš„â˜…æ‹· */
 
-        private long F(long x, long y, long z) {
-                return (x & y) | ((~x) & z);
+    private long F(long x, long y, long z) {
+        return (x & y) | ((~x) & z);
 
-        }
-        private long G(long x, long y, long z) {
-                return (x & z) | (y & (~z));
+    }
 
-        }
-        private long H(long x, long y, long z) {
-                return x ^ y ^ z;
-        }
+    private long G(long x, long y, long z) {
+        return (x & z) | (y & (~z));
 
-        private long I(long x, long y, long z) {
-                return y ^ (x | (~z));
-        }
+    }
+
+    private long H(long x, long y, long z) {
+        return x ^ y ^ z;
+    }
+
+    private long I(long x, long y, long z) {
+        return y ^ (x | (~z));
+    }
         
        /* 
-          FF,GG,HHºÍII½«µ÷ÓÃF,G,H,I½øĞĞ½üÒ»²½±ä»»
+          FF,GG,HHé”Ÿæ–¤æ‹·IIé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·F,G,H,Ié”Ÿæ–¤æ‹·é”Ÿå«æ–¤æ‹·ä¸€é”Ÿæ–¤æ‹·é”Ÿæˆ’æ¢
           FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4.
           Rotation is separate from addition to prevent recomputation.
-       */  
+       */
 
-        private long FF(long a, long b, long c, long d, long x, long s,
-                long ac) {
-                a += F (b, c, d) + x + ac;
-                a = ((int) a << s) | ((int) a >>> (32 - s));
-                a += b;
-                return a;
-        }
+    private long FF(long a, long b, long c, long d, long x, long s,
+                    long ac) {
+        a += F(b, c, d) + x + ac;
+        a = ((int) a << s) | ((int) a >>> (32 - s));
+        a += b;
+        return a;
+    }
 
-        private long GG(long a, long b, long c, long d, long x, long s,
-                long ac) {
-                a += G (b, c, d) + x + ac;
-                a = ((int) a << s) | ((int) a >>> (32 - s));
-                a += b;
-                return a;
-        }
-        private long HH(long a, long b, long c, long d, long x, long s,
-                long ac) {
-                a += H (b, c, d) + x + ac;
-                a = ((int) a << s) | ((int) a >>> (32 - s));
-                a += b;
-                return a;
-        }
-        private long II(long a, long b, long c, long d, long x, long s,
-                long ac) {
-                a += I (b, c, d) + x + ac;
-                a = ((int) a << s) | ((int) a >>> (32 - s));
-                a += b;
-                return a;
-        }
-        /*
-         md5UpdateÊÇMD5µÄÖ÷¼ÆËã¹ı³Ì£¬inbufÊÇÒª±ä»»µÄ×Ö½Ú´®£¬inputlenÊÇ³¤¶È£¬Õâ¸ö
-         º¯ÊıÓÉgetMD5ofStrµ÷ÓÃ£¬µ÷ÓÃÖ®Ç°ĞèÒªµ÷ÓÃmd5init£¬Òò´Ë°ÑËüÉè¼Æ³ÉprivateµÄ
-        */
-        private void md5Update(byte[] inbuf, int inputLen) {
+    private long GG(long a, long b, long c, long d, long x, long s,
+                    long ac) {
+        a += G(b, c, d) + x + ac;
+        a = ((int) a << s) | ((int) a >>> (32 - s));
+        a += b;
+        return a;
+    }
 
-                int i, index, partLen;
-                byte[] block = new byte[64];
-                index = (int)(count[0] >>> 3) & 0x3F;
-                // /* Update number of bits */
-                if ((count[0] += (inputLen << 3)) < (inputLen << 3))
-                        count[1]++;
-                count[1] += (inputLen >>> 29);
+    private long HH(long a, long b, long c, long d, long x, long s,
+                    long ac) {
+        a += H(b, c, d) + x + ac;
+        a = ((int) a << s) | ((int) a >>> (32 - s));
+        a += b;
+        return a;
+    }
 
-                partLen = 64 - index;
+    private long II(long a, long b, long c, long d, long x, long s,
+                    long ac) {
+        a += I(b, c, d) + x + ac;
+        a = ((int) a << s) | ((int) a >>> (32 - s));
+        a += b;
+        return a;
+    }
 
-                // Transform as many times as possible.
-                if (inputLen >= partLen) {
-                        md5Memcpy(buffer, inbuf, index, 0, partLen);
-                        md5Transform(buffer);
+    /*
+     md5Updateé”Ÿæ–¤æ‹·MD5é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ•™ï½æ‹·inbufé”Ÿæ–¤æ‹·è¦é”Ÿæˆ’æ¢é”Ÿæ–¤æ‹·é”Ÿè¡—èŠ‚è¾¾æ‹·é”Ÿæ–¤æ‹·inputlené”Ÿè§’ç­¹æ‹·é”Ÿé¥ºï½æ‹·é”Ÿæ–¤æ‹·é”Ÿ?
+     é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·getMD5ofStré”Ÿæ–¤æ‹·é”ŸçŸ«ï½æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¹‹å‰é”Ÿæ–¤æ‹·è¦é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·md5inité”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ç¨é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç‹¡ç­¹æ‹·privateé”Ÿæ–¤æ‹·
+    */
+    private void md5Update(byte[] inbuf, int inputLen) {
 
-                        for (i = partLen; i + 63 < inputLen; i += 64) {
+        int i, index, partLen;
+        byte[] block = new byte[64];
+        index = (int) (count[0] >>> 3) & 0x3F;
+        // /* Update number of bits */
+        if ((count[0] += (inputLen << 3)) < (inputLen << 3))
+            count[1]++;
+        count[1] += (inputLen >>> 29);
 
-                                md5Memcpy(block, inbuf, 0, i, 64);
-                                md5Transform (block);
-                        }
-                        index = 0;
+        partLen = 64 - index;
 
-                } else
+        // Transform as many times as possible.
+        if (inputLen >= partLen) {
+            md5Memcpy(buffer, inbuf, index, 0, partLen);
+            md5Transform(buffer);
 
-                        i = 0;
+            for (i = partLen; i + 63 < inputLen; i += 64) {
 
-                ///* Buffer remaining input */
-                md5Memcpy(buffer, inbuf, index, i, inputLen - i);
+                md5Memcpy(block, inbuf, 0, i, 64);
+                md5Transform(block);
+            }
+            index = 0;
 
-        }
-        
-        /*
-          md5FinalÕûÀíºÍÌîĞ´Êä³ö½á¹û
-        */
-        private void md5Final () {
-                byte[] bits = new byte[8];
-                int index, padLen;
+        } else
 
-                ///* Save number of bits */
-                Encode (bits, count, 8);
+            i = 0;
 
-                ///* Pad out to 56 mod 64.
-                index = (int)(count[0] >>> 3) & 0x3f;
-                padLen = (index < 56) ? (56 - index) : (120 - index);
-                md5Update (PADDING, padLen);
+        ///* Buffer remaining input */
+        md5Memcpy(buffer, inbuf, index, i, inputLen - i);
 
-                ///* Append length (before padding) */
-                md5Update(bits, 8);
+    }
 
-                ///* Store state in digest */
-                Encode (digest, state, 16);
+    /*
+      md5Finalé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿå«è¾¾æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿ?
+    */
+    private void md5Final() {
+        byte[] bits = new byte[8];
+        int index, padLen;
 
-        }
+        ///* Save number of bits */
+        Encode(bits, count, 8);
+
+        ///* Pad out to 56 mod 64.
+        index = (int) (count[0] >>> 3) & 0x3f;
+        padLen = (index < 56) ? (56 - index) : (120 - index);
+        md5Update(PADDING, padLen);
+
+        ///* Append length (before padding) */
+        md5Update(bits, 8);
+
+        ///* Store state in digest */
+        Encode(digest, state, 16);
+
+    }
          
-        /* md5MemcpyÊÇÒ»¸öÄÚ²¿Ê¹ÓÃµÄbyteÊı×éµÄ¿é¿½±´º¯Êı£¬´ÓinputµÄinpos¿ªÊ¼°Ñlen³¤¶ÈµÄ
-¡¡¡¡¡¡¡¡¡¡ ×Ö½Ú¿½±´µ½outputµÄoutposÎ»ÖÃ¿ªÊ¼ 
+        /* md5Memcpyé”Ÿæ–¤æ‹·ä¸€é”Ÿæ–¤æ‹·é”ŸèŠ‚è¯§æ‹·ä½¿é”ŸçŸ«ç¢‰æ‹·byteé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ç›®æ¦­æ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·inputé”Ÿæ–¤æ‹·inposé”Ÿæ–¤æ‹·å§‹é”Ÿæ–¤æ‹·lené”Ÿæ–¤æ‹·é”Ÿé¥ºç¢‰æ‹·
+é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹· é”Ÿè¡—èŠ‚åŒ¡æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·outputé”Ÿæ–¤æ‹·outposä½é”ŸçŸ«åŒ¡æ‹·å§‹ 
         */
 
-        private void md5Memcpy (byte[] output, byte[] input,
-                int outpos, int inpos, int len)
-        {
-                int i;
+    private void md5Memcpy(byte[] output, byte[] input,
+                           int outpos, int inpos, int len) {
+        int i;
 
-                for (i = 0; i < len; i++)
-                        output[outpos + i] = input[inpos + i];
-        }
-        
-        /*
-           md5TransformÊÇMD5ºËĞÄ±ä»»³ÌĞò£¬ÓĞmd5Updateµ÷ÓÃ£¬blockÊÇ·Ö¿éµÄÔ­Ê¼×Ö½Ú
-        */
-        private void md5Transform (byte block[]) {
-                long a = state[0], b = state[1], c = state[2], d = state[3];
-                long[] x = new long[16];
+        for (i = 0; i < len; i++)
+            output[outpos + i] = input[inpos + i];
+    }
 
-                Decode (x, block, 64);
+    /*
+       md5Transformé”Ÿæ–¤æ‹·MD5é”Ÿæ–¤æ‹·é”Ÿä¾¥å˜æ¢é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·md5Updateé”Ÿæ–¤æ‹·é”ŸçŸ«ï½æ‹·blocké”Ÿè§’åˆ†åŒ¡æ‹·é”Ÿçš†î…ƒç¡·æ‹·çº¸é”Ÿ?
+    */
+    private void md5Transform(byte block[]) {
+        long a = state[0], b = state[1], c = state[2], d = state[3];
+        long[] x = new long[16];
+
+        Decode(x, block, 64);
 
                 /* Round 1 */
-                a = FF (a, b, c, d, x[0], S11, 0xd76aa478L); /* 1 */
-                d = FF (d, a, b, c, x[1], S12, 0xe8c7b756L); /* 2 */
-                c = FF (c, d, a, b, x[2], S13, 0x242070dbL); /* 3 */
-                b = FF (b, c, d, a, x[3], S14, 0xc1bdceeeL); /* 4 */
-                a = FF (a, b, c, d, x[4], S11, 0xf57c0fafL); /* 5 */
-                d = FF (d, a, b, c, x[5], S12, 0x4787c62aL); /* 6 */
-                c = FF (c, d, a, b, x[6], S13, 0xa8304613L); /* 7 */
-                b = FF (b, c, d, a, x[7], S14, 0xfd469501L); /* 8 */
-                a = FF (a, b, c, d, x[8], S11, 0x698098d8L); /* 9 */
-                d = FF (d, a, b, c, x[9], S12, 0x8b44f7afL); /* 10 */
-                c = FF (c, d, a, b, x[10], S13, 0xffff5bb1L); /* 11 */
-                b = FF (b, c, d, a, x[11], S14, 0x895cd7beL); /* 12 */
-                a = FF (a, b, c, d, x[12], S11, 0x6b901122L); /* 13 */
-                d = FF (d, a, b, c, x[13], S12, 0xfd987193L); /* 14 */
-                c = FF (c, d, a, b, x[14], S13, 0xa679438eL); /* 15 */
-                b = FF (b, c, d, a, x[15], S14, 0x49b40821L); /* 16 */
+        a = FF(a, b, c, d, x[0], S11, 0xd76aa478L); /* 1 */
+        d = FF(d, a, b, c, x[1], S12, 0xe8c7b756L); /* 2 */
+        c = FF(c, d, a, b, x[2], S13, 0x242070dbL); /* 3 */
+        b = FF(b, c, d, a, x[3], S14, 0xc1bdceeeL); /* 4 */
+        a = FF(a, b, c, d, x[4], S11, 0xf57c0fafL); /* 5 */
+        d = FF(d, a, b, c, x[5], S12, 0x4787c62aL); /* 6 */
+        c = FF(c, d, a, b, x[6], S13, 0xa8304613L); /* 7 */
+        b = FF(b, c, d, a, x[7], S14, 0xfd469501L); /* 8 */
+        a = FF(a, b, c, d, x[8], S11, 0x698098d8L); /* 9 */
+        d = FF(d, a, b, c, x[9], S12, 0x8b44f7afL); /* 10 */
+        c = FF(c, d, a, b, x[10], S13, 0xffff5bb1L); /* 11 */
+        b = FF(b, c, d, a, x[11], S14, 0x895cd7beL); /* 12 */
+        a = FF(a, b, c, d, x[12], S11, 0x6b901122L); /* 13 */
+        d = FF(d, a, b, c, x[13], S12, 0xfd987193L); /* 14 */
+        c = FF(c, d, a, b, x[14], S13, 0xa679438eL); /* 15 */
+        b = FF(b, c, d, a, x[15], S14, 0x49b40821L); /* 16 */
 
                 /* Round 2 */
-                a = GG (a, b, c, d, x[1], S21, 0xf61e2562L); /* 17 */
-                d = GG (d, a, b, c, x[6], S22, 0xc040b340L); /* 18 */
-                c = GG (c, d, a, b, x[11], S23, 0x265e5a51L); /* 19 */
-                b = GG (b, c, d, a, x[0], S24, 0xe9b6c7aaL); /* 20 */
-                a = GG (a, b, c, d, x[5], S21, 0xd62f105dL); /* 21 */
-                d = GG (d, a, b, c, x[10], S22, 0x2441453L); /* 22 */
-                c = GG (c, d, a, b, x[15], S23, 0xd8a1e681L); /* 23 */
-                b = GG (b, c, d, a, x[4], S24, 0xe7d3fbc8L); /* 24 */
-                a = GG (a, b, c, d, x[9], S21, 0x21e1cde6L); /* 25 */
-                d = GG (d, a, b, c, x[14], S22, 0xc33707d6L); /* 26 */
-                c = GG (c, d, a, b, x[3], S23, 0xf4d50d87L); /* 27 */
-                b = GG (b, c, d, a, x[8], S24, 0x455a14edL); /* 28 */
-                a = GG (a, b, c, d, x[13], S21, 0xa9e3e905L); /* 29 */
-                d = GG (d, a, b, c, x[2], S22, 0xfcefa3f8L); /* 30 */
-                c = GG (c, d, a, b, x[7], S23, 0x676f02d9L); /* 31 */
-                b = GG (b, c, d, a, x[12], S24, 0x8d2a4c8aL); /* 32 */
+        a = GG(a, b, c, d, x[1], S21, 0xf61e2562L); /* 17 */
+        d = GG(d, a, b, c, x[6], S22, 0xc040b340L); /* 18 */
+        c = GG(c, d, a, b, x[11], S23, 0x265e5a51L); /* 19 */
+        b = GG(b, c, d, a, x[0], S24, 0xe9b6c7aaL); /* 20 */
+        a = GG(a, b, c, d, x[5], S21, 0xd62f105dL); /* 21 */
+        d = GG(d, a, b, c, x[10], S22, 0x2441453L); /* 22 */
+        c = GG(c, d, a, b, x[15], S23, 0xd8a1e681L); /* 23 */
+        b = GG(b, c, d, a, x[4], S24, 0xe7d3fbc8L); /* 24 */
+        a = GG(a, b, c, d, x[9], S21, 0x21e1cde6L); /* 25 */
+        d = GG(d, a, b, c, x[14], S22, 0xc33707d6L); /* 26 */
+        c = GG(c, d, a, b, x[3], S23, 0xf4d50d87L); /* 27 */
+        b = GG(b, c, d, a, x[8], S24, 0x455a14edL); /* 28 */
+        a = GG(a, b, c, d, x[13], S21, 0xa9e3e905L); /* 29 */
+        d = GG(d, a, b, c, x[2], S22, 0xfcefa3f8L); /* 30 */
+        c = GG(c, d, a, b, x[7], S23, 0x676f02d9L); /* 31 */
+        b = GG(b, c, d, a, x[12], S24, 0x8d2a4c8aL); /* 32 */
 
                 /* Round 3 */
-                a = HH (a, b, c, d, x[5], S31, 0xfffa3942L); /* 33 */
-                d = HH (d, a, b, c, x[8], S32, 0x8771f681L); /* 34 */
-                c = HH (c, d, a, b, x[11], S33, 0x6d9d6122L); /* 35 */
-                b = HH (b, c, d, a, x[14], S34, 0xfde5380cL); /* 36 */
-                a = HH (a, b, c, d, x[1], S31, 0xa4beea44L); /* 37 */
-                d = HH (d, a, b, c, x[4], S32, 0x4bdecfa9L); /* 38 */
-                c = HH (c, d, a, b, x[7], S33, 0xf6bb4b60L); /* 39 */
-                b = HH (b, c, d, a, x[10], S34, 0xbebfbc70L); /* 40 */
-                a = HH (a, b, c, d, x[13], S31, 0x289b7ec6L); /* 41 */
-                d = HH (d, a, b, c, x[0], S32, 0xeaa127faL); /* 42 */
-                c = HH (c, d, a, b, x[3], S33, 0xd4ef3085L); /* 43 */
-                b = HH (b, c, d, a, x[6], S34, 0x4881d05L); /* 44 */
-                a = HH (a, b, c, d, x[9], S31, 0xd9d4d039L); /* 45 */
-                d = HH (d, a, b, c, x[12], S32, 0xe6db99e5L); /* 46 */
-                c = HH (c, d, a, b, x[15], S33, 0x1fa27cf8L); /* 47 */
-                b = HH (b, c, d, a, x[2], S34, 0xc4ac5665L); /* 48 */
+        a = HH(a, b, c, d, x[5], S31, 0xfffa3942L); /* 33 */
+        d = HH(d, a, b, c, x[8], S32, 0x8771f681L); /* 34 */
+        c = HH(c, d, a, b, x[11], S33, 0x6d9d6122L); /* 35 */
+        b = HH(b, c, d, a, x[14], S34, 0xfde5380cL); /* 36 */
+        a = HH(a, b, c, d, x[1], S31, 0xa4beea44L); /* 37 */
+        d = HH(d, a, b, c, x[4], S32, 0x4bdecfa9L); /* 38 */
+        c = HH(c, d, a, b, x[7], S33, 0xf6bb4b60L); /* 39 */
+        b = HH(b, c, d, a, x[10], S34, 0xbebfbc70L); /* 40 */
+        a = HH(a, b, c, d, x[13], S31, 0x289b7ec6L); /* 41 */
+        d = HH(d, a, b, c, x[0], S32, 0xeaa127faL); /* 42 */
+        c = HH(c, d, a, b, x[3], S33, 0xd4ef3085L); /* 43 */
+        b = HH(b, c, d, a, x[6], S34, 0x4881d05L); /* 44 */
+        a = HH(a, b, c, d, x[9], S31, 0xd9d4d039L); /* 45 */
+        d = HH(d, a, b, c, x[12], S32, 0xe6db99e5L); /* 46 */
+        c = HH(c, d, a, b, x[15], S33, 0x1fa27cf8L); /* 47 */
+        b = HH(b, c, d, a, x[2], S34, 0xc4ac5665L); /* 48 */
 
                 /* Round 4 */
-                a = II (a, b, c, d, x[0], S41, 0xf4292244L); /* 49 */
-                d = II (d, a, b, c, x[7], S42, 0x432aff97L); /* 50 */
-                c = II (c, d, a, b, x[14], S43, 0xab9423a7L); /* 51 */
-                b = II (b, c, d, a, x[5], S44, 0xfc93a039L); /* 52 */
-                a = II (a, b, c, d, x[12], S41, 0x655b59c3L); /* 53 */
-                d = II (d, a, b, c, x[3], S42, 0x8f0ccc92L); /* 54 */
-                c = II (c, d, a, b, x[10], S43, 0xffeff47dL); /* 55 */
-                b = II (b, c, d, a, x[1], S44, 0x85845dd1L); /* 56 */
-                a = II (a, b, c, d, x[8], S41, 0x6fa87e4fL); /* 57 */
-                d = II (d, a, b, c, x[15], S42, 0xfe2ce6e0L); /* 58 */
-                c = II (c, d, a, b, x[6], S43, 0xa3014314L); /* 59 */
-                b = II (b, c, d, a, x[13], S44, 0x4e0811a1L); /* 60 */
-                a = II (a, b, c, d, x[4], S41, 0xf7537e82L); /* 61 */
-                d = II (d, a, b, c, x[11], S42, 0xbd3af235L); /* 62 */
-                c = II (c, d, a, b, x[2], S43, 0x2ad7d2bbL); /* 63 */
-                b = II (b, c, d, a, x[9], S44, 0xeb86d391L); /* 64 */
+        a = II(a, b, c, d, x[0], S41, 0xf4292244L); /* 49 */
+        d = II(d, a, b, c, x[7], S42, 0x432aff97L); /* 50 */
+        c = II(c, d, a, b, x[14], S43, 0xab9423a7L); /* 51 */
+        b = II(b, c, d, a, x[5], S44, 0xfc93a039L); /* 52 */
+        a = II(a, b, c, d, x[12], S41, 0x655b59c3L); /* 53 */
+        d = II(d, a, b, c, x[3], S42, 0x8f0ccc92L); /* 54 */
+        c = II(c, d, a, b, x[10], S43, 0xffeff47dL); /* 55 */
+        b = II(b, c, d, a, x[1], S44, 0x85845dd1L); /* 56 */
+        a = II(a, b, c, d, x[8], S41, 0x6fa87e4fL); /* 57 */
+        d = II(d, a, b, c, x[15], S42, 0xfe2ce6e0L); /* 58 */
+        c = II(c, d, a, b, x[6], S43, 0xa3014314L); /* 59 */
+        b = II(b, c, d, a, x[13], S44, 0x4e0811a1L); /* 60 */
+        a = II(a, b, c, d, x[4], S41, 0xf7537e82L); /* 61 */
+        d = II(d, a, b, c, x[11], S42, 0xbd3af235L); /* 62 */
+        c = II(c, d, a, b, x[2], S43, 0x2ad7d2bbL); /* 63 */
+        b = II(b, c, d, a, x[9], S44, 0xeb86d391L); /* 64 */
 
-                state[0] += a;
-                state[1] += b;
-                state[2] += c;
-                state[3] += d;
+        state[0] += a;
+        state[1] += b;
+        state[2] += c;
+        state[3] += d;
 
+    }
+
+    /*Encodeé”Ÿæ–¤æ‹·longé”Ÿæ–¤æ‹·é”Ÿä»‹æŒ‰é¡ºé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·byteé”Ÿæ–¤æ‹·é”Ÿä»‹ï¼Œé”Ÿæ–¤æ‹·ä¸ºjavaé”Ÿæ–¤æ‹·longé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·64bité”Ÿä¾¥ï½æ‹·
+      åªé”Ÿæ–¤æ‹·é”Ÿ?2bité”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åº”åŸå§‹Cå®é”Ÿè¡—ç¢‰æ‹·é”Ÿæ–¤æ‹·é€”
+    */
+    private void Encode(byte[] output, long[] input, int len) {
+        int i, j;
+
+        for (i = 0, j = 0; j < len; i++, j += 4) {
+            output[j] = (byte) (input[i] & 0xffL);
+            output[j + 1] = (byte) ((input[i] >>> 8) & 0xffL);
+            output[j + 2] = (byte) ((input[i] >>> 16) & 0xffL);
+            output[j + 3] = (byte) ((input[i] >>> 24) & 0xffL);
         }
-        
-        /*Encode°ÑlongÊı×é°´Ë³Ğò²ğ³ÉbyteÊı×é£¬ÒòÎªjavaµÄlongÀàĞÍÊÇ64bitµÄ£¬
-          Ö»²ğµÍ32bit£¬ÒÔÊÊÓ¦Ô­Ê¼CÊµÏÖµÄÓÃÍ¾
-        */
-        private void Encode (byte[] output, long[] input, int len) {
-                int i, j;
+    }
 
-                for (i = 0, j = 0; j < len; i++, j += 4) {
-                        output[j] = (byte)(input[i] & 0xffL);
-                        output[j + 1] = (byte)((input[i] >>> 8) & 0xffL);
-                        output[j + 2] = (byte)((input[i] >>> 16) & 0xffL);
-                        output[j + 3] = (byte)((input[i] >>> 24) & 0xffL);
-                }
-        }
-
-        /*Decode°ÑbyteÊı×é°´Ë³ĞòºÏ³É³ÉlongÊı×é£¬ÒòÎªjavaµÄlongÀàĞÍÊÇ64bitµÄ£¬
-          Ö»ºÏ³ÉµÍ32bit£¬¸ß32bitÇåÁã£¬ÒÔÊÊÓ¦Ô­Ê¼CÊµÏÖµÄÓÃÍ¾
-        */
-        private void Decode (long[] output, byte[] input, int len) {
-                int i, j;
+    /*Decodeé”Ÿæ–¤æ‹·byteé”Ÿæ–¤æ‹·é”Ÿä»‹æŒ‰é¡ºé”Ÿæ–¤æ‹·é“£æ²™é”Ÿçµ£ongé”Ÿæ–¤æ‹·é”Ÿä»‹ï¼Œé”Ÿæ–¤æ‹·ä¸ºjavaé”Ÿæ–¤æ‹·longé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·64bité”Ÿä¾¥ï½æ‹·
+      åªé”Ÿè¾ƒæˆç¢‰æ‹·32bité”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·32bité”Ÿæ–¤æ‹·é”Ÿå§ï¼Œé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åº”åŸå§‹Cå®é”Ÿè¡—ç¢‰æ‹·é”Ÿæ–¤æ‹·é€”
+    */
+    private void Decode(long[] output, byte[] input, int len) {
+        int i, j;
 
 
-                for (i = 0, j = 0; j < len; i++, j += 4)
-                        output[i] = b2iu(input[j]) |
-                                (b2iu(input[j + 1]) << 8) |
-                                (b2iu(input[j + 2]) << 16) |
-                                (b2iu(input[j + 3]) << 24);
-        }
-       
-        /*
-          b2iuÊÇÎÒĞ´µÄÒ»¸ö°Ñbyte°´ÕÕ²»¿¼ÂÇÕı¸ººÅµÄÔ­ÔòµÄ£¢ÉıÎ»£¢³ÌĞò£¬ÒòÎªjavaÃ»ÓĞunsignedÔËËã
-        */
-        public static long b2iu(byte b) {
-                return b < 0 ? b & 0x7F + 128 : b;
-        }
-        
-	/*byteHEX()£¬ÓÃÀ´°ÑÒ»¸öbyteÀàĞÍµÄÊı×ª»»³ÉÊ®Áù½øÖÆµÄASCII±íÊ¾£¬
-	¡¡ÒòÎªjavaÖĞµÄbyteµÄtoStringÎŞ·¨ÊµÏÖÕâÒ»µã£¬ÎÒÃÇÓÖÃ»ÓĞCÓïÑÔÖĞµÄ
-	  sprintf(outbuf,"%02X",ib)
-	*/
-        public static String byteHEX(byte ib) {
-                char[] Digit = { '0','1','2','3','4','5','6','7','8','9',
-                'A','B','C','D','E','F' };
-                char [] ob = new char[2];
-                ob[0] = Digit[(ib >>> 4) & 0X0F];
-                ob[1] = Digit[ib & 0X0F];
-                String s = new String(ob);
-                return s;
-        }
+        for (i = 0, j = 0; j < len; i++, j += 4)
+            output[i] = b2iu(input[j]) |
+                    (b2iu(input[j + 1]) << 8) |
+                    (b2iu(input[j + 2]) << 16) |
+                    (b2iu(input[j + 3]) << 24);
+    }
 
-        public static void main(String args[]) {
+    /*
+      b2iué”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å†™é”Ÿæ–¤æ‹·ä¸€é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·byteé”Ÿæ–¤æ‹·é”Ÿç§¸è¯§æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è¯ºé”Ÿçš†î…¨æ‹·é”Ÿä¾¥ï½æ‹·é”Ÿæ–¤æ‹·ä½é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¸ºjavaæ²¡é”Ÿæ–¤æ‹·unsignedé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
+    */
+    public static long b2iu(byte b) {
+        return b < 0 ? b & 0x7F + 128 : b;
+    }
+
+    /*byteHEX()é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¸€é”Ÿæ–¤æ‹·byteé”Ÿæ–¤æ‹·é”Ÿé…µç¢‰æ‹·é”Ÿæ–¤æ‹·è½¬é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é¢‘é”Ÿç´¸SCIIé”Ÿæ–¤æ‹·ç¤ºé”Ÿæ–¤æ‹·
+    é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¸ºjavaé”Ÿå«ç¢‰æ‹·byteé”Ÿæ–¤æ‹·toStringé”Ÿç«å‡¤æ‹·å®é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ä¸€é”Ÿå§ï¼Œé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ²¡é”Ÿæ–¤æ‹·Cé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿå«ç¢‰æ‹·
+      sprintf(outbuf,"%02X",ib)
+    */
+    public static String byteHEX(byte ib) {
+        char[] Digit = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'A', 'B', 'C', 'D', 'E', 'F'};
+        char[] ob = new char[2];
+        ob[0] = Digit[(ib >>> 4) & 0X0F];
+        ob[1] = Digit[ib & 0X0F];
+        String s = new String(ob);
+        return s;
+    }
+
+    public static void main(String args[]) {
 
 
-                MD5 m = new MD5();
-                if (Array.getLength(args) == 0) {   //Èç¹ûÃ»ÓĞ²ÎÊı£¬Ö´ĞĞ±ê×¼µÄTest Suite
-                
-                       	System.out.println("MD5 Test suite:");
-                	System.out.println("MD5(\"\"):"+m.getMD5ofStr(""));
-                	System.out.println("MD5(\"a\"):"+m.getMD5ofStr("a"));
-                	System.out.println("MD5(\"abc\"):"+m.getMD5ofStr("abc"));
-                	System.out.println("MD5(\"message digest\"):"+m.getMD5ofStr("message digest"));
-                	System.out.println("MD5(\"abcdefghijklmnopqrstuvwxyz\"):"+
-                        m.getMD5ofStr("abcdefghijklmnopqrstuvwxyz"));
-                	System.out.println("MD5(\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\"):"+
-                     	m.getMD5ofStr("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"));
-                }
-                else 
-                      	System.out.println("MD5(" + args[0] + ")=" + m.getMD5ofStr(args[0]));
-                
-         
-        }
+        MD5 m = new MD5();
+        if (Array.getLength(args) == 0) {   //é”Ÿæ–¤æ‹·é”ŸçŸ«ä¼™æ‹·èƒé”Ÿæ–¤æ‹·é”Ÿè¡—è¾¾æ‹·æ–œé”Ÿé˜¶ç¡·æ‹·é”Ÿçµ‹est Suite
+
+            System.out.println("MD5 Test suite:");
+            System.out.println("MD5(\"\"):" + m.getMD5ofStr(""));
+            System.out.println("MD5(\"a\"):" + m.getMD5ofStr("a"));
+            System.out.println("MD5(\"abc\"):" + m.getMD5ofStr("abc"));
+            System.out.println("MD5(\"message digest\"):" + m.getMD5ofStr("message digest"));
+            System.out.println("MD5(\"abcdefghijklmnopqrstuvwxyz\"):" +
+                    m.getMD5ofStr("abcdefghijklmnopqrstuvwxyz"));
+            System.out.println("MD5(\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\"):" +
+                    m.getMD5ofStr("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"));
+        } else
+            System.out.println("MD5(" + args[0] + ")=" + m.getMD5ofStr(args[0]));
+
+
+    }
 
 }
 

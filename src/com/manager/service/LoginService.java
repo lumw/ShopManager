@@ -15,6 +15,7 @@ package com.manager.service;
  *
  * </pre>
  */
-public interface LoginService
-{
+public interface LoginService {
+
+    public boolean isUserExist(String userName, String password);
 }

@@ -1,7 +1,8 @@
 package com.manager.action;
 
-import com.manager.dao.impl.UserDaoImpl;
+import com.manager.service.LoginService;
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.log4j.Logger;
 
 /**
  * <pre>
@@ -22,20 +23,30 @@ public class LoginAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
 
-    private UserDaoImpl userDaoImpl;
+    private final Logger log = Logger.getLogger(LoginAction.class);
+
+    private LoginService loginServiceImpl;
     private String username;
     private String password;
 
 
+    @Override
     public String execute() throws Exception {
 
-        if( username.equals("admin") && password.equals("123456") ){
+        log.debug("用户" + username + "使用密码 "+ password + "登陆... ");
+
+        System.out.println(loginServiceImpl.isUserExist(username, password));
+        if (loginServiceImpl.isUserExist(username, password)) {
             return SUCCESS;
-        }else{
+        } else {
             return ERROR;
         }
     }
 
+
+    public void setLoginServiceImpl(LoginService loginServiceImpl) {
+        this.loginServiceImpl = loginServiceImpl;
+    }
 
     public String getUsername() {
         return username;
@@ -53,11 +64,5 @@ public class LoginAction extends ActionSupport {
         this.password = password;
     }
 
-    public UserDaoImpl getUserDaoImpl() {
-        return userDaoImpl;
-    }
 
-    public void setUserDaoImpl(UserDaoImpl userDaoImpl) {
-        this.userDaoImpl = userDaoImpl;
-    }
 }
