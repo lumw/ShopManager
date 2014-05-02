@@ -1,6 +1,7 @@
 package com.manager.action;
 
 import com.manager.service.LoginService;
+import com.manager.util.security.MD5;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.log4j.Logger;
 
@@ -25,18 +26,19 @@ public class LoginAction extends ActionSupport {
 
     private final Logger log = Logger.getLogger(LoginAction.class);
 
-    private LoginService loginServiceImpl;
+    private LoginService loginService;
     private String username;
     private String password;
-
 
     @Override
     public String execute() throws Exception {
 
-        log.debug("用户" + username + "使用密码 "+ password + "登陆... ");
+        MD5 md5 = new MD5();
+        password = md5.getMD5ofStr(password).toUpperCase();
 
-        System.out.println(loginServiceImpl.isUserExist(username, password));
-        if (loginServiceImpl.isUserExist(username, password)) {
+        log.debug("用户[" + username + "]使用密码[" + password + "]登陆... if loginService is null?" + (loginService == null));
+
+        if (loginService.isUserExist(username, password)) {
             return SUCCESS;
         } else {
             return ERROR;
@@ -44,8 +46,8 @@ public class LoginAction extends ActionSupport {
     }
 
 
-    public void setLoginServiceImpl(LoginService loginServiceImpl) {
-        this.loginServiceImpl = loginServiceImpl;
+    public void setLoginService(LoginService loginService) {
+        this.loginService = loginService;
     }
 
     public String getUsername() {
@@ -63,6 +65,4 @@ public class LoginAction extends ActionSupport {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 }

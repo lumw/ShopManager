@@ -1,14 +1,12 @@
 package com.manager.service.impl;
 
 import com.manager.dao.UserDao;
-import com.manager.service.LoginService;
-
-import java.util.List;
+import com.manager.service.RegisterService;
 
 /**
  * <pre>
  * Insert Brief Description Here!
- * 日    期: 14-4-29 下午4:36
+ * 日    期: 2014/5/2 19:20
  * 模    块: 接口
  * 描    述:
  * 备    注:
@@ -16,11 +14,11 @@ import java.util.List;
  * 修改历史:
  *
  * 序号    日期          修改人     修改原因
- *  1     14-4-29       鲁梦维     版本创建
+ *  1     2014/5/2       鲁梦维     版本创建
  *
  * </pre>
  */
-public class LoginServiceImpl implements LoginService {
+public class RegisterServiceImpl implements RegisterService {
 
     UserDao userDao;
 
@@ -29,13 +27,4 @@ public class LoginServiceImpl implements LoginService {
     }
 
 
-    public boolean isUserExist(String userName, String password) {
-
-        List list;
-
-        list = userDao.isUserExist(userName, password);
-
-        return 0 != list.size();
-
-    }
 }

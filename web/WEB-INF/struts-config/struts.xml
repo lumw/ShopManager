@@ -28,9 +28,15 @@
         </interceptors>
         <default-interceptor-ref name="authority-stack"/>
         -->
-        <action name="login" class="com.manager.action.LoginAction" method="execute">
+        <action name="login" class="loginAction" method="execute">
             <result name="success">/jsp/success.jsp</result>
-            <result name="error">/jsp/error.jsp</result>
+            <result name="error">/login/login.jsp</result>
         </action>
+
+        <action name="register" class="com.manager.action.RegisterAction" method="execute">
+            <result name="success">/jsp/success.jsp</result>
+            <result name="error">/login/login.jsp</result>
+        </action>
+
     </package>
 </struts>

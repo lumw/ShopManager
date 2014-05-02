@@ -19,22 +19,33 @@ import java.sql.Timestamp;
  */
 public class User {
 
-    private String userID;
+    private int userID;
     private String userName;
     private String password;
+    private String name;
     private int sex;
     private Timestamp birthday;
     private String address;
     private String email;
     private String telphone;
     private Timestamp regisTime;
+    private int status;
 
-    public String getUserID() {
+
+    public int getUserID() {
         return userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUserName() {
@@ -99,5 +110,13 @@ public class User {
 
     public void setRegisTime(Timestamp regisTime) {
         this.regisTime = regisTime;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
