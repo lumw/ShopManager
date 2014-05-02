@@ -1,6 +1,9 @@
 package com.manager.service.impl;
 
+import com.manager.dao.UserDao;
 import com.manager.service.LoginService;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -17,7 +20,21 @@ import com.manager.service.LoginService;
  *
  * </pre>
  */
-public class LoginServiceImpl implements LoginService{
+public class LoginServiceImpl implements LoginService {
 
+    UserDao userDao;
 
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public boolean isUserExist(String userName, String password) {
+
+        List list;
+
+        list = userDao.isUserExist(userName, password);
+
+        return 0 != list.size();
+
+    }
 }

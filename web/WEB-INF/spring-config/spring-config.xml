@@ -10,11 +10,11 @@
         <!-- 指定连接数据库的驱动 -->
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
         <!-- 指定连接数据库的URL -->
-        <property name="jdbcUrl" value="jdbc:mysql://115.28.2.3/wechat"/>
+        <property name="jdbcUrl" value="jdbc:mysql://192.168.0.114/test"/>
         <!-- 指定连接数据库的用户名 -->
-        <property name="user" value="wechat"/>
+        <property name="user" value="test_user"/>
         <!-- 指定连接数据库的密码 -->
-        <property name="password" value="password"/>
+        <property name="password" value="test_user"/>
 
         <!-- 指定连接数据库连接池的最大连接数-->
         <property name="maxPoolSize" value="30"/>
@@ -35,11 +35,15 @@
     </bean>
     
 
-    <bean id="userDao" class="com.manager.dao.impl.UserDaoImpl">
-        <property name="JdbcTemplate" ref="jdbcTemplate"/>
+    <bean id="userDaoImpl" class="com.manager.dao.impl.UserDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 
-    <bean id="login" class="com.manager.action.LoginAction">
-        <property name="UserDaoImpl" ref="userDao"/>
+    <bean id="loginServiceImpl" class="com.manager.service.impl.LoginServiceImpl">
+        <property name="userDao" ref="userDaoImpl"/>
+    </bean>
+
+    <bean id="loginAction" class="com.manager.action.LoginAction" scope="prototype">
+        <property name="loginServiceImpl" ref="loginServiceImpl"/>
     </bean>
 </beans>
