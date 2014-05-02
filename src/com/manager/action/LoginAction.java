@@ -1,6 +1,7 @@
 package com.manager.action;
 
 import com.manager.service.LoginService;
+import com.manager.util.security.MD5;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.log4j.Logger;
 
@@ -33,9 +34,11 @@ public class LoginAction extends ActionSupport {
     @Override
     public String execute() throws Exception {
 
-        log.debug("用户" + username + "使用密码 "+ password + "登陆... ");
+        log.debug("用户" + username + "使用密码 " + password + "登陆... ");
 
-        System.out.println(loginServiceImpl.isUserExist(username, password));
+        MD5 md5 = new MD5();
+        password = md5.getMD5ofStr(password);
+
         if (loginServiceImpl.isUserExist(username, password)) {
             return SUCCESS;
         } else {

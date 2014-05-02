@@ -1,5 +1,7 @@
 package com.manager.dao;
 
+import com.manager.entity.User;
+
 import java.util.List;
 
 /**
@@ -19,5 +21,14 @@ import java.util.List;
  */
 public interface UserDao {
 
+
+    /**
+     * 根据用户名、密码判断用户是否可以登录
+     * @param userName
+     * @param password
+     * @return List
+     */
     public List isUserExist(String userName, String password);
+
+    public int registerUser(User user);
 }
