@@ -33,7 +33,7 @@
             <result name="error">/login/login.jsp</result>
         </action>
 
-        <action name="register" class="com.manager.action.RegisterAction" method="execute">
+        <action name="register" class="registerAction" method="execute">
             <result name="success">/jsp/success.jsp</result>
             <result name="error">/login/login.jsp</result>
         </action>

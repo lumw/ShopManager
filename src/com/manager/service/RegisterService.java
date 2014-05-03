@@ -1,5 +1,7 @@
 package com.manager.service;
 
+import com.manager.entity.User;
+
 /**
  * <pre>
  * Insert Brief Description Here!
@@ -16,6 +18,26 @@ package com.manager.service;
  * </pre>
  */
 public interface RegisterService {
+
+
+    /**
+     * 判断用户名是否已经注册过
+     *
+     * @param userName 登陆用户名
+     * @return List
+     */
+    public boolean isUserNameRegistered(String userName);
+
+
+    /**
+     * 增加新用户
+     *
+     * @param user  用户对象
+     * @return int
+     */
+    public int addUser(User user);
+
+
 
 
 }

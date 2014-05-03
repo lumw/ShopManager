@@ -18,7 +18,8 @@ package com.manager.util;
 public class FinalString {
 
     /*用户状态*/
-    public  static final int USER_STATUS_DEL = -1;  /*用户已被删除*/
+    public static final int USER_STATUS_DEL = -1;  /*用户已被删除*/
+    public static final int USER_STATUS_ADD = 0;   /*用户注册*/
 
 
 }

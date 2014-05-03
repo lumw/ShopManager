@@ -27,7 +27,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 
 
     /**
-     * 校验用户是否存在
+     * 通过 用户名+密码 校验用户是否存在
      *
      * @param userName 登陆用户名
      * @param password 登陆密码
@@ -48,6 +48,24 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 
 
     /**
+     * 通过用户名校验用户是否存在
+     *
+     * @param userName 登陆用户名
+     * @return List
+     */
+    public List isUserExist(String userName) {
+
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("select * from user_info_t ");
+        sql.append("where ");
+        sql.append("username = ").append("'").append(userName).append("' ");
+
+        return this.getJdbcTemplate().queryForList(sql.toString());
+    }
+
+
+    /**
      * 增加用户
      *
      * @param user 用户对象
@@ -56,7 +74,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
     public int addUser(User user) {
 
         StringBuilder sql = new StringBuilder();
-        sql.append("insert into user_info_t(username, password, name, sex, birthday, address, email, telphone, regisTime) ");
+        sql.append("insert into user_info_t(username, password, name, sex, birthday, address, email, telphone, regisTime, status) ");
         sql.append("values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         return this.getJdbcTemplate().update(sql.toString(),

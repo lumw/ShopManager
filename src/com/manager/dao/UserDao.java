@@ -22,13 +22,23 @@ import java.util.List;
 public interface UserDao {
 
     /**
-     * 校验用户是否存在
+     * 通过 用户名+密码 校验用户是否存在
      *
      * @param userName   登陆用户名
      * @param password   登陆密码
      * @return List
      */
     public List isUserExist(String userName, String password);
+
+
+    /**
+     * 通过用户名校验用户是否存在
+     *
+     * @param userName 登陆用户名
+     * @return List
+     */
+    public List isUserExist(String userName);
+
 
 
 
