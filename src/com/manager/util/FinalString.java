@@ -22,4 +22,16 @@ public class FinalString {
     public static final int USER_STATUS_ADD = 0;   /*用户注册*/
 
 
+
+    /*商品类型状态*/
+    public static final int GOODS_TYPE_STATUS_DELETED = -1;         /*已删除*/
+    public static final int GOODS_TYPE_STATUS_NOT_AVAILABEL = 0;    /*不可用*/
+    public static final int GOODS_TYPE_STATUS_AVAILABEL_ = 1;       /*正常状态*/
+
+
+    /*商品类型状态*/
+    public static final int SHOP_STATUS_DELETED = -1;         /*已删除*/
+
+
+
 }

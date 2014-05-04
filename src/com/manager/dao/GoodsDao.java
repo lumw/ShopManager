@@ -40,12 +40,14 @@ public interface GoodsDao {
 
 
     /**
-     * 删除商品信息
+     * 更改商品状态
      *
-     * @param goods   商品对象
+     * @param shopID   商铺ID
+     * @param goodsID  商品ID
+     * @param status   商品状态
      * @return int
      */
-    public int delGoods(int shopID, int goodsID);
+    public int updateGoodsStatus(int shopID, int goodsID, int status);
 
 
 

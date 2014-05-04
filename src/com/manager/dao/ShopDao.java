@@ -52,9 +52,10 @@ public interface ShopDao {
     /**
      * 删除商铺 实际并不删除数据库中数据，只是将商铺状态置为 -1
      *
-     * @param shop   商铺对象
+     * @param shopID   商铺对象
+     * @param status   商铺状态
      * @return int
      */
-    public int delShop(int shopID);
+    public int updateShopStatus(int shopID, int status);
 
 }

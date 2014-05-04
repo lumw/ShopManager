@@ -32,7 +32,7 @@ public interface GoodsTypeDao {
 
 
     /**
-     * 修改商品类型
+     * 修改商品类型名称
      *
      * @param goodsType 商品类型对象
      * @return int
@@ -41,12 +41,13 @@ public interface GoodsTypeDao {
 
 
     /**
-     * 删除商品类型
+     * 更改商品类型状态
      *
      * @param goodsType 商品类型对象
+     * @param status    商品类型状态
      * @return int
      */
-    public int delGoodsType(GoodsType goodsType);
+    public int updateGoodsTypeStatus(GoodsType goodsType, int status);
 
 
 

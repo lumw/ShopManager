@@ -5,7 +5,7 @@ package com.manager.entity;
  * Insert Brief Description Here!
  * 日    期: 2014/3/25 20:34
  * 模    块: 接口
- * 描    述:
+ * 描    述: 商品类型信息
  * 备    注:
  * ------------------------------------------------------------
  * 修改历史:
@@ -17,40 +17,40 @@ package com.manager.entity;
  */
 public class GoodsType {
 
-    public int ShopID;
-    public int GoodTypeID;
-    public String GoodTypeName;
-    public int Status;
+    public int shopID;
+    public int goodTypeID;
+    public String goodTypeName;
+    public int status;
 
     public int getShopID() {
-        return ShopID;
+        return shopID;
     }
 
     public void setShopID(int shopID) {
-        ShopID = shopID;
+        this.shopID = shopID;
     }
 
     public int getGoodTypeID() {
-        return GoodTypeID;
+        return goodTypeID;
     }
 
     public void setGoodTypeID(int goodTypeID) {
-        GoodTypeID = goodTypeID;
+        this.goodTypeID = goodTypeID;
     }
 
     public String getGoodTypeName() {
-        return GoodTypeName;
+        return goodTypeName;
     }
 
     public void setGoodTypeName(String goodTypeName) {
-        GoodTypeName = goodTypeName;
+        this.goodTypeName = goodTypeName;
     }
 
     public int getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(int status) {
-        Status = status;
+        this.status = status;
     }
 }

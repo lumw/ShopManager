@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * Insert Brief Description Here!
  * 日    期: 2014/3/25 20:36
  * 模    块: 接口
- * 描    述:
+ * 描    述: 商品信息
  * 备    注:
  * ------------------------------------------------------------
  * 修改历史:
@@ -19,94 +19,103 @@ import java.sql.Timestamp;
  */
 public class Goods {
 
-    private int ShopID;              /*店铺ID*/
-    private int GoodsTypeID;         /*商品类型编码*/
-    private int GoodsID;             /*商品ID*/
-    private String GoodsName;        /*商品名称*/
-    private int Price;               /*商品价格*/
-    private Timestamp CreateTime;    /*商品创建时间*/
-    private int SaleCnt;             /*累计销售次数*/
-    private String  ActID;           /*活动方案ID*/
-    private int Status;              /*商品是否下架 0:下架 1:可以购买*/
-    private int Stock;               /*商品库存*/
+    private int shopID;              /*店铺ID*/
+    private int goodsTypeID;         /*商品类型编码*/
+    private int goodsID;             /*商品ID*/
+    private String goodsName;        /*商品名称*/
+    private int unitID;              /*计量单位编码*/
+    private float price;             /*商品价格*/
+    private Timestamp createTime;    /*商品创建时间*/
+    private int saleCnt;             /*累计销售次数*/
+    private String  actID;           /*活动方案ID*/
+    private int status;              /*商品是否下架 0:下架 1:可以购买*/
+    private int stock;               /*商品库存*/
 
     public int getShopID() {
-        return ShopID;
+        return shopID;
     }
 
     public void setShopID(int shopID) {
-        ShopID = shopID;
+        this.shopID = shopID;
     }
 
     public int getGoodsTypeID() {
-        return GoodsTypeID;
+        return goodsTypeID;
     }
 
     public void setGoodsTypeID(int goodsTypeID) {
-        GoodsTypeID = goodsTypeID;
+        this.goodsTypeID = goodsTypeID;
     }
 
     public int getGoodsID() {
-        return GoodsID;
+        return goodsID;
     }
 
     public void setGoodsID(int goodsID) {
-        GoodsID = goodsID;
+        this.goodsID = goodsID;
     }
 
     public String getGoodsName() {
-        return GoodsName;
+        return goodsName;
     }
 
     public void setGoodsName(String goodsName) {
-        GoodsName = goodsName;
+        this.goodsName = goodsName;
     }
 
-    public int getPrice() {
-        return Price;
+    public int getUnitID() {
+        return unitID;
     }
 
-    public void setPrice(int price) {
-        Price = price;
+    public void setUnitID(int unitID) {
+        this.unitID = unitID;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     public Timestamp getCreateTime() {
-        return CreateTime;
+        return createTime;
     }
 
     public void setCreateTime(Timestamp createTime) {
-        CreateTime = createTime;
+        this.createTime = createTime;
     }
 
     public int getSaleCnt() {
-        return SaleCnt;
+        return saleCnt;
     }
 
     public void setSaleCnt(int saleCnt) {
-        SaleCnt = saleCnt;
+        this.saleCnt = saleCnt;
     }
 
     public String getActID() {
-        return ActID;
+        return actID;
     }
 
     public void setActID(String actID) {
-        ActID = actID;
+        this.actID = actID;
     }
 
     public int getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(int status) {
-        Status = status;
+        this.status = status;
     }
 
     public int getStock() {
-        return Stock;
+        return stock;
     }
 
     public void setStock(int stock) {
-        Stock = stock;
+        this.stock = stock;
     }
 }

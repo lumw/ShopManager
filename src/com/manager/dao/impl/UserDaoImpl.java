@@ -2,7 +2,6 @@ package com.manager.dao.impl;
 
 import com.manager.dao.UserDao;
 import com.manager.entity.User;
-import com.manager.util.FinalString;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import java.sql.Types;
@@ -19,7 +18,7 @@ import java.util.List;
  * 修改历史:
  *
  * 序号    日期          修改人     修改原因
- *  1     14-4-29       鲁梦维     版本创建
+ *  1     14-4-29        鲁梦维     版本创建
  *
  * </pre>
  */
@@ -27,7 +26,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 
 
     /**
-     * 通过 用户名+密码 校验用户是否存在
+     * 通过 用户名+密码 校验用户是否存在(用于用户登录)
      *
      * @param userName 登陆用户名
      * @param password 登陆密码
@@ -48,7 +47,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 
 
     /**
-     * 通过用户名校验用户是否存在
+     * 通过用户名校验用户是否存在(用于用户注册)
      *
      * @param userName 登陆用户名
      * @return List
@@ -105,14 +104,15 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 
 
     /**
-     * 删除用户信息,实际并不删除数据库中数据，只是将用户状态置为 FinalString.USER_STATUS_DEL
+     * 更改用户状态
      *
      * @param  userID 用户编号
+     * @param  status 用户状态
      * @return int
      */
-    public int delUser(int userID){
+    public int updateUserStatus(int userID, int status){
 
-        String sql = "update user_info_t set status = "+ FinalString.USER_STATUS_DEL +" where userid = " + userID;
+        String sql = "update user_info_t set status = "+ status +" where userid = " + userID;
 
         return this.getJdbcTemplate().update(sql);
     }

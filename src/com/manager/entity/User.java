@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * Insert Brief Description Here!
  * 日    期: 2014/5/2 0:19
  * 模    块: 接口
- * 描    述:
+ * 描    述: 用户信息
  * 备    注:
  * ------------------------------------------------------------
  * 修改历史:
@@ -40,14 +40,6 @@ public class User {
         this.userID = userID;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -62,6 +54,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getSex() {

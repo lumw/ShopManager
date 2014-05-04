@@ -2,7 +2,9 @@ package com.manager.dao.impl;
 
 import com.manager.dao.GoodsDao;
 import com.manager.entity.Goods;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
+import java.sql.Types;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ import java.util.List;
  *
  * </pre>
  */
-public class GoodsDaoImpl implements GoodsDao {
+public class GoodsDaoImpl extends JdbcDaoSupport implements GoodsDao {
 
     /**
      * 增加商品信息
@@ -29,7 +31,16 @@ public class GoodsDaoImpl implements GoodsDao {
      * @return int
      */
     public int addGoods(Goods goods) {
-        return 0;
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("insert into goods_info_t (ShopID, GoodsTypeID, GoodsID, GoodsName, UnitID, Price, CreateTime, SaleCnt, ActID, Status, Stock)");
+        sql.append("values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        return this.getJdbcTemplate().update(sql.toString(),
+                new Object[]{goods.getShopID(), goods.getGoodsTypeID(), goods.getGoodsID(), goods.getGoodsName(), goods.getUnitID(), goods.getPrice(), goods.getCreateTime(),
+                        goods.getSaleCnt(), goods.getActID(), goods.getStatus(), goods.getStock()},
+                new int[]{Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.FLOAT, Types.TIMESTAMP,
+                        Types.INTEGER, Types.VARCHAR, Types.INTEGER, Types.INTEGER});
     }
 
     /**
@@ -39,18 +50,30 @@ public class GoodsDaoImpl implements GoodsDao {
      * @return int
      */
     public int updateGoods(Goods goods) {
-        return 0;
+
+        String sql = "update goods_info_t set GoodsTypeID = ?, GoodsName = ?, UnitID = ?, Price = ?, CreateTime = ?,  ActID = ?, Status = ?, Stock = ? where ShopID = ? and GoodsID = ?";
+        return this.getJdbcTemplate().update(sql,
+                new Object[]{goods.getGoodsID(), goods.getGoodsName(), goods.getUnitID(), goods.getPrice(), goods.getCreateTime(), goods.getActID(),
+                             goods.getStatus(), goods.getStock(), goods.getShopID(), goods.getGoodsID()},
+                new int[]{Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.FLOAT, Types.FLOAT, Types.TIMESTAMP, Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.INTEGER});
     }
 
     /**
-     * 删除商品信息
+     * 更改商品状态
      *
-     * @param shopID
-     * @param goodsID
+     * @param shopID   商铺ID
+     * @param goodsID  商品ID
+     * @param status   商品状态
      * @return int
      */
-    public int delGoods(int shopID, int goodsID) {
-        return 0;
+    public int updateGoodsStatus(int shopID, int goodsID, int status) {
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("update goods_info_t set status = ").append(status);
+        sql.append(" where shopID = ").append(shopID);
+        sql.append(" goodsID = ").append(goodsID);
+
+        return this.getJdbcTemplate().update(sql.toString());
     }
 
     /**
@@ -61,6 +84,8 @@ public class GoodsDaoImpl implements GoodsDao {
      * @return List
      */
     public List getAllGoodsByGoodsType(int shopID, int goodsTypeID) {
-        return null;
+
+        String sql = "select * from goods_info_t where shopID = " + shopID + " and goodsTypeID = " + goodsTypeID;
+        return this.getJdbcTemplate().queryForList(sql);
     }
 }

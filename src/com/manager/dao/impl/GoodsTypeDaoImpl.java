@@ -2,7 +2,9 @@ package com.manager.dao.impl;
 
 import com.manager.dao.GoodsTypeDao;
 import com.manager.entity.GoodsType;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
+import java.sql.Types;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ import java.util.List;
  *
  * </pre>
  */
-public class GoodsTypeDaoImpl implements GoodsTypeDao {
+public class GoodsTypeDaoImpl extends JdbcDaoSupport implements GoodsTypeDao {
 
 
     /**
@@ -30,27 +32,48 @@ public class GoodsTypeDaoImpl implements GoodsTypeDao {
      * @return int
      */
     public int addGoodsType(GoodsType goodsType) {
-        return 0;
+
+        String sql = "insert into goods_type_info_t (ShopID, GoodsTypeID, GoodsTypeName, Status) values (?, ?, ?, ?)";
+        return this.getJdbcTemplate().update(sql,
+                                             new Object[]{goodsType.getShopID(), goodsType.getGoodTypeID(), goodsType.getGoodTypeName(), goodsType.getStatus()},
+                                             new int[]{Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.INTEGER});
     }
 
     /**
-     * 修改商品类型
+     * 修改商品类型名称
      *
      * @param goodsType 商品类型对象
      * @return int
      */
     public int updateGoodsType(GoodsType goodsType) {
-        return 0;
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("update goods_type_info_t set GoodsTypeName = ").append("'").append(goodsType.getGoodTypeName()).append("'");
+        sql.append("where");
+        sql.append("ShopID = ").append(goodsType.getShopID());
+        sql.append("and");
+        sql.append("GoodsTypeID = ").append(goodsType.getGoodTypeID());
+
+        return this.getJdbcTemplate().update(sql.toString());
     }
 
     /**
-     * 删除商品类型
+     * 更改商品类型状态
      *
      * @param goodsType 商品类型对象
+     * @param status    商品类型状态
      * @return int
      */
-    public int delGoodsType(GoodsType goodsType) {
-        return 0;
+    public int updateGoodsTypeStatus(GoodsType goodsType, int status) {
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("update goods_type_info_t set Status = ").append(status);
+        sql.append("where");
+        sql.append("ShopID = ").append(goodsType.getGoodTypeID());
+        sql.append("and");
+        sql.append("GoodsTypeID = ").append(goodsType.getGoodTypeID());
+
+        return this.getJdbcTemplate().update(sql.toString());
     }
 
     /**
@@ -59,6 +82,8 @@ public class GoodsTypeDaoImpl implements GoodsTypeDao {
      * @param shopID@return int
      */
     public List getAllGoodsTypeByShopID(int shopID) {
-        return null;
+
+        String sql = "select * from goods_type_info_t where ShopID = " + shopID;
+        return this.getJdbcTemplate().queryForList(sql);
     }
 }
