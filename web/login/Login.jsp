@@ -198,25 +198,25 @@
 											<div class="space-6"></div>
 											<p> 输入以下信息: </p>
 
-											<form>
+											<form id="registerForm">
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control" placeholder="邮件" />
+															<input type="email" class="form-control" name="email" id="email" placeholder="邮件" />
 															<i class="icon-envelope"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="用户名" />
+															<input type="text" class="form-control" name="userName" id="userName" placeholder="用户名" />
 															<i class="icon-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="密码" />
+															<input type="password" class="form-control" name="password" id="password" placeholder="密码" />
 															<i class="icon-lock"></i>
 														</span>
 													</label>
@@ -244,7 +244,7 @@
 															重置
 														</button>
 
-														<button type="button" class="width-65 pull-right btn btn-sm btn-success">
+														<button type="submit" class="width-65 pull-right btn btn-sm btn-success">
 															提交注册
 															<i class="icon-arrow-right icon-on-right"></i>
 														</button>
@@ -306,7 +306,7 @@
 			 jQuery('#'+id).addClass('visible');
 			}
 		</script>
-		<script type="text/javascript" src="<%=path%>/login/js/Login.js"></script>
+		<script type="text/javascript" src="<%=path%>/login/js/login.js"></script>
 	<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
 </body>
 </html>
