@@ -34,7 +34,7 @@ public class LoginAction extends ActionSupport {
     public String execute() throws Exception {
 
         MD5 md5 = new MD5();
-        password = md5.getMD5ofStr(password).toUpperCase();
+
 
         log.debug("用户[" + username + "]使用密码[" + password + "]登陆... if loginService is null?" + (loginService == null));
 

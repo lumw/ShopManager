@@ -24,11 +24,21 @@ public interface ShopDao {
     /**
      * 通过商铺ID查询商铺具体信息
      *
+     * @param ShopID   商铺ID
+     * @return List
+     */
+    public List getShopInfoByShopID(int ShopID);
+
+
+    /**
+     * 查询用户下的所有商铺信息
+     *
      * @param userName   登陆用户名
      * @param password   登陆密码
      * @return List
      */
-    public List getShopInfo(int ShopID);
+    public List getShopInfoByUserID(int userID);
+
 
 
     /**

@@ -26,10 +26,10 @@ public class Goods {
     private int unitID;              /*计量单位编码*/
     private float price;             /*商品价格*/
     private Timestamp createTime;    /*商品创建时间*/
-    private int saleCnt;             /*累计销售次数*/
+    private float saleQuantity;        /*累计销售数量*/
     private String  actID;           /*活动方案ID*/
     private int status;              /*商品是否下架 0:下架 1:可以购买*/
-    private int stock;               /*商品库存*/
+    private float stock;               /*商品库存*/
 
     public int getShopID() {
         return shopID;
@@ -87,12 +87,12 @@ public class Goods {
         this.createTime = createTime;
     }
 
-    public int getSaleCnt() {
-        return saleCnt;
+    public float getSaleQuantity() {
+        return saleQuantity;
     }
 
-    public void setSaleCnt(int saleCnt) {
-        this.saleCnt = saleCnt;
+    public void setSaleQuantity(float saleQuantity) {
+        this.saleQuantity = saleQuantity;
     }
 
     public String getActID() {
@@ -111,11 +111,11 @@ public class Goods {
         this.status = status;
     }
 
-    public int getStock() {
+    public float getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(float stock) {
         this.stock = stock;
     }
 }

@@ -29,10 +29,21 @@ public class ShopDaoImpl extends JdbcDaoSupport implements ShopDao {
      *
      * @param ShopID@return List
      */
-    public List getShopInfo(int ShopID) {
+    public List getShopInfoByShopID(int ShopID) {
 
         String sql = "select * from shop_info_t where shopID = " + ShopID;
+        return this.getJdbcTemplate().queryForList(sql);
+    }
 
+
+    /**
+     * 查询用户下的所有商铺信息
+     *
+     * @param userID@return List
+     */
+    public List getShopInfoByUserID(int userID) {
+
+        String sql = "select * from shop_info_t where UserID = " + userID;
         return this.getJdbcTemplate().queryForList(sql);
     }
 

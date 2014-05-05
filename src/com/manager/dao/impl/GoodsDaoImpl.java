@@ -38,9 +38,9 @@ public class GoodsDaoImpl extends JdbcDaoSupport implements GoodsDao {
 
         return this.getJdbcTemplate().update(sql.toString(),
                 new Object[]{goods.getShopID(), goods.getGoodsTypeID(), goods.getGoodsID(), goods.getGoodsName(), goods.getUnitID(), goods.getPrice(), goods.getCreateTime(),
-                        goods.getSaleCnt(), goods.getActID(), goods.getStatus(), goods.getStock()},
+                        goods.getSaleQuantity(), goods.getActID(), goods.getStatus(), goods.getStock()},
                 new int[]{Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.FLOAT, Types.TIMESTAMP,
-                        Types.INTEGER, Types.VARCHAR, Types.INTEGER, Types.INTEGER});
+                        Types.FLOAT, Types.VARCHAR, Types.INTEGER, Types.FLOAT});
     }
 
     /**

@@ -29,12 +29,12 @@
         <default-interceptor-ref name="authority-stack"/>
         -->
         <action name="login" class="loginAction" method="execute">
-            <result name="success">/jsp/success.jsp</result>
+            <result name="success">/WEB-INF/manager/manager.jsp</result>
             <result name="error">/login/login.jsp</result>
         </action>
 
         <action name="register" class="registerAction" method="execute">
-            <result name="success">/jsp/success.jsp</result>
+            <result name="success">/WEB-INF/manager/manager.jsp</result>
             <result name="error">/login/login.jsp</result>
         </action>
 
