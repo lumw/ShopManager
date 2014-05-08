@@ -26,9 +26,9 @@ public interface UserDao {
      *
      * @param userName   登陆用户名
      * @param password   登陆密码
-     * @return List
+     * @return User
      */
-    public List isUserExist(String userName, String password);
+    public User isUserExist(String userName, String password);
 
 
     /**
@@ -66,4 +66,14 @@ public interface UserDao {
      * @return int
      */
     public int updateUserStatus(int userID, int status);
+
+
+    /**
+     * 根据用户登录名查询用户所有信息
+     *
+     * @param userName 用户登录名
+     * @return User
+     */
+    public List<User> getUserInfoByuserNameAndPwd(String userName, String password);
+
 }

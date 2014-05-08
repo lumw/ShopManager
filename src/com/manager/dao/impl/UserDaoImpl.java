@@ -2,6 +2,8 @@ package com.manager.dao.impl;
 
 import com.manager.dao.UserDao;
 import com.manager.entity.User;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import java.sql.Types;
@@ -32,7 +34,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
      * @param password 登陆密码
      * @return List
      */
-    public List isUserExist(String userName, String password) {
+    public User isUserExist(String userName, String password) {
 
         StringBuilder sql = new StringBuilder();
 
@@ -42,7 +44,9 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
         sql.append("and ");
         sql.append("password = ").append("'").append(password).append("' ");
 
-        return this.getJdbcTemplate().queryForList(sql.toString());
+        RowMapper<User> rm = ParameterizedBeanPropertyRowMapper.newInstance(User.class);
+
+        return this.getJdbcTemplate().queryForObject(sql.toString(), rm);
     }
 
 
@@ -56,7 +60,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 
         StringBuilder sql = new StringBuilder();
 
-        sql.append("select * from user_info_t ");
+        sql.append("select count(*) from user_info_t ");
         sql.append("where ");
         sql.append("username = ").append("'").append(userName).append("' ");
 
@@ -115,6 +119,30 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
         String sql = "update user_info_t set status = "+ status +" where userid = " + userID;
 
         return this.getJdbcTemplate().update(sql);
+    }
+
+
+    /**
+     * 根据用户登录名查询用户所有信息
+     * JdbcTemplate的queryForObject被强制要求返回一条记录,如果查询出的结果数不等以1，则抛出异常
+     *
+     * @param userName 用户登录名
+     * @param password 用户密码
+     * @return List
+     */
+    public List<User> getUserInfoByuserNameAndPwd(String userName, String password) {
+
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("select * from user_info_t ");
+        sql.append("where ");
+        sql.append("username = ").append("'").append(userName).append("' ");
+        sql.append("and ");
+        sql.append("password = ").append("'").append(password).append("' ");
+
+        RowMapper<User> rm = ParameterizedBeanPropertyRowMapper.newInstance(User.class);
+
+        return this.getJdbcTemplate().query(sql.toString(), rm);
     }
 
 }

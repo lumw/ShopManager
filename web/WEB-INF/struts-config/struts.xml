@@ -38,5 +38,9 @@
             <result name="error">/login/login.jsp</result>
         </action>
 
+        <action name="forward" class="forward" method="execute">
+            <result name="success">/WEB-INF/shop/createShop.jsp</result>
+        </action>
+
     </package>
 </struts>
