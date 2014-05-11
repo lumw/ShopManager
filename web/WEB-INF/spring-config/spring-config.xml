@@ -29,15 +29,20 @@
     </bean>
 
 
-    <!-- Dao层配置 -->
+
     <bean  id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-    
 
+    <!-- Dao层配置 -->
     <bean id="userDaoImpl" class="com.manager.dao.impl.UserDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
+
+    <bean id="shopDaoImpl" class="com.manager.dao.impl.ShopDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+
 
     <!--  service层配置  -->
     <bean id="registerServiceImpl" class="com.manager.service.impl.RegisterServiceImpl">
@@ -46,6 +51,10 @@
 
     <bean id="userInfoServiceImpl" class="com.manager.service.impl.UserInfoServiceImpl">
         <property name="userDao" ref="userDaoImpl"/>
+    </bean>
+
+    <bean id="shopInfoServiceImpl" class="com.manager.service.impl.ShopInfoServiceImpl">
+        <property name="shopDao" ref="shopDaoImpl"/>
     </bean>
 
     <!--  Action配置  -->
@@ -59,8 +68,14 @@
         <property name="registerService" ref="registerServiceImpl"/>
     </bean>
 
+
+    <bean id="addShopAction" class="com.manager.action.AddShopAction" scope="prototype">
+        <property name="shopInfoService" ref="shopInfoServiceImpl"/>
+    </bean>
+
     <bean id="forward" class="com.manager.action.ForwardAction" scope="prototype">
     </bean>
+
 
 
 </beans>

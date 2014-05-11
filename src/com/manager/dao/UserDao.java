@@ -1,6 +1,7 @@
 package com.manager.dao;
 
 import com.manager.entity.User;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -75,5 +76,23 @@ public interface UserDao {
      * @return User
      */
     public List<User> getUserInfoByuserNameAndPwd(String userName, String password);
+
+
+    /**
+     * 根据用户ID查询出某个用户下有多少个商铺
+     *
+     * @param userID 用户ID
+     * @return int
+     */
+    public int getShopCountByUserID(int userID) throws DataAccessException;
+
+
+    /**
+     * 根据用户ID查询该用户的级别
+     *
+     * @param  userID  用户ID
+     * @return int
+     */
+    public int getMaxShopCntByUserID(int userID) throws DataAccessException;
 
 }

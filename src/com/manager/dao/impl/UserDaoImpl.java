@@ -2,6 +2,7 @@ package com.manager.dao.impl;
 
 import com.manager.dao.UserDao;
 import com.manager.entity.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -78,13 +79,13 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 
         StringBuilder sql = new StringBuilder();
         sql.append("insert into user_info_t(username, password, name, sex, birthday, address, email, telphone, regisTime, status) ");
-        sql.append("values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        sql.append("values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         return this.getJdbcTemplate().update(sql.toString(),
                                              new Object[]{user.getUserName(), user.getPassword(), user.getName(), user.getSex(),user.getBirthday(),
-                                                          user.getAddress(), user.getEmail(), user.getTelphone(), user.getRegisTime(), user.getStatus()},
+                                                          user.getAddress(), user.getEmail(), user.getTelphone(), user.getRegisTime(), user.getStatus(), user.getLevel()},
                                              new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.TIMESTAMP,
-                                                       Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP, Types.INTEGER});
+                                                       Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP, Types.INTEGER, Types.INTEGER});
     }
 
 
@@ -144,5 +145,37 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 
         return this.getJdbcTemplate().query(sql.toString(), rm);
     }
+
+
+    /**
+     * 根据用户ID查询出某个用户下有多少个商铺
+     *
+     * @param userID 用户ID
+     * @return int
+     */
+    public int getShopCountByUserID(int userID) throws DataAccessException {
+
+        String sql = "select count(*) from shop_info_t where UserID = " + userID;
+        return this.getJdbcTemplate().queryForObject(sql, Integer.class);
+    }
+
+
+    /**
+     * 根据用户ID查询出此用户最多能够创建多少商铺
+     *
+     * @param userID 用户ID
+     * @return int
+     */
+    public int getMaxShopCntByUserID(int userID) throws DataAccessException {
+
+        /*查询出用户级别*/
+        String sql = "select level from user_info_t where UserID = " + userID;
+        int userLevel = this.getJdbcTemplate().queryForObject(sql, Integer.class);
+
+        /*根据用户级别c查询出此用户最多能够创建多少商铺*/
+        sql = "select MaxShopCnt from user_level_t where Level = " + userLevel;
+        return this.getJdbcTemplate().queryForObject(sql, Integer.class);
+    }
+
 
 }

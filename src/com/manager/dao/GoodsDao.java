@@ -1,6 +1,7 @@
 package com.manager.dao;
 
 import com.manager.entity.Goods;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface GoodsDao {
      * @param goods   商品对象
      * @return int
      */
-    public int addGoods(Goods goods);
+    public int addGoods(Goods goods) throws DataAccessException;
 
 
     /**
@@ -36,7 +37,7 @@ public interface GoodsDao {
      * @param goods   商品对象
      * @return int
      */
-    public int updateGoods(Goods goods);
+    public int updateGoods(Goods goods) throws DataAccessException;
 
 
     /**
@@ -47,17 +48,17 @@ public interface GoodsDao {
      * @param status   商品状态
      * @return int
      */
-    public int updateGoodsStatus(int shopID, int goodsID, int status);
+    public int updateGoodsStatus(int shopID, int goodsID, int status) throws DataAccessException;
 
 
 
     /**
-     * 获取某个商品类型下所有的商品信息
+     * 获取商铺中某个商品类型下所有的商品信息
      *
      * @param shopID      商铺ID
      * @param goodsTypeID 商品类型
      * @return List
      */
-    public List getAllGoodsByGoodsType(int shopID, int goodsTypeID);
+    public List getAllGoodsByGoodsType(int shopID, int goodsTypeID) throws DataAccessException;
 
 }

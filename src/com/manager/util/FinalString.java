@@ -34,4 +34,10 @@ public class FinalString {
 
 
 
+    /*商铺状态*/
+    public static final int SHOP_STATUS_OPEN = 1;           /*营业中*/
+    public static final int SHOP_STATUS_CLOSE = 2;          /*休息中*/
+
+
+
 }

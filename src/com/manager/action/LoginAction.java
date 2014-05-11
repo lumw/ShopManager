@@ -46,6 +46,7 @@ public class LoginAction extends ActionSupport {
         if ( list.size() > 0) {
             for(User user : list){
                 /*将登陆用户的详细信息保存在Session中*/
+                System.out.println(user.getUserID() + user.getUserName());
                 ServletActionContext.getContext().getSession().put("userInfo", user);
             }
             return SUCCESS;

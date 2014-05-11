@@ -1,5 +1,7 @@
 package com.manager.service;
 
+import com.manager.entity.Shop;
+
 import java.util.List;
 
 /**
@@ -23,8 +25,19 @@ public interface ShopInfoService {
     /**
      * 查询某个用户下的所有商铺信息
      *
-     * @param user 用户对象
+     * @param userID 用户ID
      * @return int
      */
-    public List getShopInfoByUserID(int shopID);
+    public List<Shop> getShopInfoByUserID(int userID);
+
+
+
+    /**
+     * 新增店铺
+     *
+     * @param shop 用户对象
+     * @return int
+     */
+    public int addShop(Shop shop);
+
 }

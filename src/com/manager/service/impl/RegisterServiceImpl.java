@@ -57,6 +57,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         user.setRegisTime(new Timestamp(System.currentTimeMillis()));
         user.setStatus(FinalString.USER_STATUS_ADD);
+        user.setLevel(1);
 
         return userDao.addUser(user);
 

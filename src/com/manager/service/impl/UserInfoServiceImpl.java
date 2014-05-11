@@ -52,4 +52,22 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     }
 
+
+    /**
+     * 根据用户级别判断用户是否可以继续创建店铺
+     *
+     * @param userID
+     * @return User
+     */
+    public boolean hasPermissionsToSetUpShop(int userID) {
+
+        /*获取该用户已创建商铺的数量*/
+        int ownShopCnt = userDao.getShopCountByUserID(userID);
+
+        /*获取对应该用户级别所能够创建的商铺个数*/
+        int maxShopCnt = userDao.getMaxShopCntByUserID(userID) ;
+
+        return (maxShopCnt - ownShopCnt > 0);
+    }
+
 }

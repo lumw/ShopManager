@@ -40,4 +40,12 @@ public interface UserInfoService {
     public List<User> getUserInfo(String userName, String password);
 
 
+
+    /**
+     * 根据用户级别判断用户是否可以继续创建店铺
+     *
+     * @param  userID 用户ID
+     * @return boolean
+     */
+    public boolean hasPermissionsToSetUpShop(int userID);
 }

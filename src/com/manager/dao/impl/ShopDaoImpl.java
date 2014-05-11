@@ -2,6 +2,7 @@ package com.manager.dao.impl;
 
 import com.manager.dao.ShopDao;
 import com.manager.entity.Shop;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import java.sql.Types;
@@ -27,9 +28,10 @@ public class ShopDaoImpl extends JdbcDaoSupport implements ShopDao {
     /**
      * 通过商铺ID查询商铺具体信息
      *
-     * @param ShopID@return List
+     * @param ShopID 商铺ID
+     * @return List
      */
-    public List getShopInfoByShopID(int ShopID) {
+    public List getShopInfoByShopID(int ShopID) throws DataAccessException {
 
         String sql = "select * from shop_info_t where shopID = " + ShopID;
         return this.getJdbcTemplate().queryForList(sql);
@@ -39,13 +41,15 @@ public class ShopDaoImpl extends JdbcDaoSupport implements ShopDao {
     /**
      * 查询用户下的所有商铺信息
      *
-     * @param userID@return List
+     * @param userID 用户ID
+     * @return List
      */
-    public List getShopInfoByUserID(int userID) {
+    public List<Shop> getShopInfoByUserID(int userID) throws DataAccessException {
 
         String sql = "select * from shop_info_t where UserID = " + userID;
-        return this.getJdbcTemplate().queryForList(sql);
+        return this.getJdbcTemplate().queryForList(sql, Shop.class);
     }
+
 
     /**
      * 创建商铺
@@ -53,7 +57,7 @@ public class ShopDaoImpl extends JdbcDaoSupport implements ShopDao {
      * @param shop 商铺对象
      * @return int
      */
-    public int addShop(Shop shop) {
+    public int addShop(Shop shop) throws DataAccessException {
 
         StringBuilder sql = new StringBuilder();
         sql.append("insert into shop_info_t (ShopName, UserID, CreateTime, Endtime, PayType, Address, Telphone, FloorPrice, Freight, NS, WE, Status, Notice, IfSmsInform, IfWechatInform)");
@@ -72,7 +76,7 @@ public class ShopDaoImpl extends JdbcDaoSupport implements ShopDao {
      * @param shop 商铺对象
      * @return int
      */
-    public int updateShop(Shop shop) {
+    public int updateShop(Shop shop) throws DataAccessException {
 
         String sql = "update shop_info_t set ShopName = ?, PayType = ?, Address = ?, Telphone = ?, FloorPrice = ?, Freight = ?, NS = ?, WE = ?, Status = ?, Notice = ?, IfSmsInform = ?, IfWechatInform = ? where ShopID = " + shop.getShopID();
 
