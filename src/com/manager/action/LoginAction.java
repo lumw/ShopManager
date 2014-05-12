@@ -1,9 +1,13 @@
 package com.manager.action;
 
-import com.manager.service.LoginService;
+import com.manager.entity.User;
+import com.manager.service.UserInfoService;
 import com.manager.util.security.MD5;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -26,7 +30,8 @@ public class LoginAction extends ActionSupport {
 
     private final Logger log = Logger.getLogger(LoginAction.class);
 
-    private LoginService loginService;
+    private UserInfoService userInfoService;
+
     private String username;
     private String password;
 
@@ -34,20 +39,24 @@ public class LoginAction extends ActionSupport {
     public String execute() throws Exception {
 
         MD5 md5 = new MD5();
+        password = md5.getMD5ofStr(password).toUpperCase();
 
-
-        log.debug("用户[" + username + "]使用密码[" + password + "]登陆... if loginService is null?" + (loginService == null));
-
-        if (loginService.isUserExist(username, password)) {
+        //log.debug("用户[" + username + "]使用密码[" + password + "]登陆... ");
+        List<User> list = userInfoService.getUserInfo(username, password);
+        if ( list.size() > 0) {
+            for(User user : list){
+                /*将登陆用户的详细信息保存在Session中*/
+                System.out.println(user.getUserID() + user.getUserName());
+                ServletActionContext.getContext().getSession().put("userInfo", user);
+            }
             return SUCCESS;
         } else {
             return ERROR;
         }
     }
 
-
-    public void setLoginService(LoginService loginService) {
-        this.loginService = loginService;
+    public void setUserInfoService(UserInfoService userInfoService) {
+        this.userInfoService = userInfoService;
     }
 
     public String getUsername() {

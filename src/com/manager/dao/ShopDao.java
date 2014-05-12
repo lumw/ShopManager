@@ -1,6 +1,7 @@
 package com.manager.dao;
 
 import com.manager.entity.Shop;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -37,8 +38,7 @@ public interface ShopDao {
      * @param password   登陆密码
      * @return List
      */
-    public List getShopInfoByUserID(int userID);
-
+    public List<Shop> getShopInfoByUserID(int userID) throws DataAccessException;
 
 
     /**
@@ -47,7 +47,7 @@ public interface ShopDao {
      * @param shop   商铺对象
      * @return int
      */
-    public int addShop(Shop shop);
+    public int addShop(Shop shop) throws DataAccessException;
 
 
     /**
@@ -56,7 +56,7 @@ public interface ShopDao {
      * @param shop   商铺对象
      * @return int
      */
-    public int updateShop(Shop shop);
+    public int updateShop(Shop shop) throws DataAccessException;
 
 
     /**
@@ -66,6 +66,5 @@ public interface ShopDao {
      * @param status   商铺状态
      * @return int
      */
-    public int updateShopStatus(int shopID, int status);
-
+    public int updateShopStatus(int shopID, int status) throws DataAccessException;
 }

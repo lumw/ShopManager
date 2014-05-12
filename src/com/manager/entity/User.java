@@ -30,7 +30,7 @@ public class User {
     private String telphone;
     private Timestamp regisTime;
     private int status;
-
+    private int level;
 
     public int getUserID() {
         return userID;
@@ -118,5 +118,13 @@ public class User {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }
